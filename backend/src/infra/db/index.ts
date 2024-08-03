@@ -1,9 +1,8 @@
-import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/better-sqlite3";
+import Database from "better-sqlite3";
 
-const client = createClient({
-  url: process.env.DATABASE_URL ?? "",
-  authToken: process.env.DATABASE_AUTH_TOKEN,
+const client = new Database(process.env.DB_URL ?? "");
+
+export const db = drizzle(client, {
+  logger: process.env.NODE_ENV !== "production",
 });
-
-export const db = drizzle(client, { logger: true });
